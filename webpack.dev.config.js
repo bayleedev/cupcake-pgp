@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { spawn } = require('child_process')
 
 // Config directories
@@ -11,14 +12,11 @@ const OUTPUT_DIR = path.resolve(__dirname, 'dist')
 const defaultInclude = [SRC_DIR]
 
 module.exports = {
-  entry: {
-    bundle: SRC_DIR + '/index.js',
-    'pgp-sw': SRC_DIR + '/pgp-sw.js',
-  },
+  entry: SRC_DIR + '/index.js',
   output: {
     path: OUTPUT_DIR,
     publicPath: '/',
-    filename: '[name].js',
+    filename: 'bundle.js',
   },
   module: {
     rules: [
@@ -50,9 +48,10 @@ module.exports = {
   },
   target: 'electron-renderer',
   plugins: [
-    new HtmlWebpackPlugin({
-      chunks: ['bundle'],
-    }),
+    new HtmlWebpackPlugin(),
+    new CopyWebpackPlugin([
+      { from: 'src/pgp-sw.js' },
+    ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })

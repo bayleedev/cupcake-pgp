@@ -3,6 +3,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // Config directories
 const SRC_DIR = path.resolve(__dirname, 'src')
@@ -12,14 +13,11 @@ const OUTPUT_DIR = path.resolve(__dirname, 'dist')
 const defaultInclude = [SRC_DIR]
 
 module.exports = {
-  entry: {
-    bundle: SRC_DIR + '/index.js',
-    'pgp-sw': SRC_DIR + '/pgp-sw.js',
-  },
+  entry: SRC_DIR + '/index.js',
   output: {
     path: OUTPUT_DIR,
     publicPath: './',
-    filename: '[name].js',
+    filename: 'bundle.js',
   },
   module: {
     rules: [
@@ -51,6 +49,9 @@ module.exports = {
   target: 'electron-renderer',
   plugins: [
     new HtmlWebpackPlugin(),
+    new CopyWebpackPlugin([
+      { from: 'src/pgp-sw.js' },
+    ]),
     new ExtractTextPlugin('bundle.css'),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')

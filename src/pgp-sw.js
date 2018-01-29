@@ -1,18 +1,29 @@
-const window = {}
-console.log("SW Startup!");
+postMessage({
+  status: 'ready',
+})
 
-// Install Service Worker
-self.addEventListener('install', function(event){
-    console.log('installed!');
-});
+const pgp = {
+  encode () {
+    return '--encoded data--'
+  }
+}
 
-// Service Worker Active
-self.addEventListener('activate', function(event){
-    console.log('activated!');
-});
+self.addEventListener('message', function({ data }) {
+  const { id, action, payload } = data
 
-self.addEventListener('message', function(event){
-  if (!event.ports || !event.ports[0]) return
-  console.log("SW Received Message: " + event.data);
-  event.ports[0].postMessage("SW Says 'Hello back!'");
-});
+  try {
+    postMessage({
+      id,
+      action,
+      status: 'complete',
+      payload: pgp[action](payload),
+    })
+  } catch (e) {
+    postMessage({
+      id,
+      action,
+      status: 'error',
+      payload: e.message,
+    })
+  }
+})
