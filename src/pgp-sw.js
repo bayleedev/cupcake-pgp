@@ -1,3 +1,4 @@
+const window = {}
 console.log("SW Startup!");
 
 // Install Service Worker
