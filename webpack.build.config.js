@@ -12,11 +12,14 @@ const OUTPUT_DIR = path.resolve(__dirname, 'dist')
 const defaultInclude = [SRC_DIR]
 
 module.exports = {
-  entry: SRC_DIR + '/index.js',
+  entry: {
+    bundle: SRC_DIR + '/index.js',
+    'pgp-sw': SRC_DIR + '/pgp-sw.js',
+  },
   output: {
     path: OUTPUT_DIR,
     publicPath: './',
-    filename: 'bundle.js'
+    filename: '[name].js',
   },
   module: {
     rules: [

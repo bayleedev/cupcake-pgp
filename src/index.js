@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { HashRouter, Route } from 'react-router-dom'
 import App from './components/App'
 import Home from './components/Home'
+import './pgp-client'
 
 let root = document.createElement('div')
 root.id = 'root'
