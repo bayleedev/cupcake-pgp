@@ -1,0 +1,12 @@
+#app {
+  border: 1px solid orange;
+  display: flex;
+  .navigation {
+    flex-grow: 1;
+    border: 1px solid blue;
+  }
+  .content {
+    flex-grow: 3;
+    border: 1px solid green;
+  }
+}
