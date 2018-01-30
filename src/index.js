@@ -5,7 +5,6 @@ import App from './components/App'
 import Home from './components/Home'
 import Friends from './components/Friends'
 import AddFriend from './components/AddFriend'
-import './pgp-client'
 
 let root = document.createElement('div')
 root.id = 'root'
@@ -16,8 +15,8 @@ render((
   <HashRouter>
     <App>
       <Route path="/" exact component={Home} />
-      <Route path="/friends" component={Friends} />
-      <Route path="/addFriend" component={AddFriend} />
+      <Route path="/friends" exact component={Friends} />
+      <Route path="/addFriend" exact component={AddFriend} />
     </App>
   </HashRouter>
 ), document.getElementById('root'))

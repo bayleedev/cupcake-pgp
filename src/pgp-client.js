@@ -58,4 +58,4 @@ class PGPClient extends EventEmitter {
   }
 }
 
-export default PGPClient
+export default new PGPClient()

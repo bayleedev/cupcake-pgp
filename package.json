@@ -20,6 +20,7 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babili-webpack-plugin": "^0.1.2",
     "copy-webpack-plugin": "^4.3.1",
@@ -38,7 +39,9 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "fs-jetpack": "^1.2.0",
     "openpgp": "^2.6.2",
+    "prop-types": "^15.6.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   }
