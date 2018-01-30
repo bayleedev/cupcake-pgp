@@ -43,7 +43,7 @@ function createWindow() {
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
     // Open the DevTools automatically if developing
-    if ( dev ) {
+    if ( dev && process.argv.indexOf('--noDevServer') === -1 ) {
       mainWindow.webContents.openDevTools()
     }
   })

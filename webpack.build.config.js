@@ -48,7 +48,9 @@ module.exports = {
   },
   target: 'electron-renderer',
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+    }),
     new CopyWebpackPlugin([
       { from: 'src/pgp-sw.js' },
     ]),
