@@ -27,3 +27,5 @@ self.addEventListener('message', function({ data }) {
     })
   }
 })
+
+module.exports = pgp
