@@ -48,6 +48,8 @@
     "openpgp": "^2.6.2",
     "prop-types": "^15.6.0",
     "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "winston": "^2.4.0",
+    "winston-daily-rotate-file": "^1.7.2"
   }
 }

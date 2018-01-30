@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
+import Logger from '../util/logger'
 
 class AddFriend extends React.Component {
   static contextTypes = {
@@ -28,6 +29,7 @@ class AddFriend extends React.Component {
       })
       this.props.history.push('/friends');
     }).catch((e) => {
+      Logger.error('Failed to add friend', e)
       this.setState({
         isLoading: false,
         hasError: true,

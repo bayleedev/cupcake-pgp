@@ -1,4 +1,6 @@
-const EventEmitter = require('events')
+import EventEmitter from 'events'
+import Logger from './util/logger'
+
 const worker = new Worker('/pgp-sw.js')
 
 /**

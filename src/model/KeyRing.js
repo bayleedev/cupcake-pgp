@@ -1,6 +1,8 @@
 import { readFileSync } from 'fs'
 import { homedir } from 'os'
 import jetpack from 'fs-jetpack'
+import path from 'path'
+import Logger from '../util/logger'
 
 class KeyRing {
   constructor (file) {
@@ -38,9 +40,9 @@ class KeyRing {
   read () {
     if (this.newConfig) return
     try {
-      this.data = jetpack.read(this.file, 'json')
+      this.data = jetpack.read(this.file, 'json') || this.data
     } catch (e) {
-      // TODO logging
+      Logger.error('Cannot read configuration', e)
       this.failed = true
     }
   }
@@ -54,13 +56,12 @@ class KeyRing {
     }).then(() => {
       this.writing = false
     }, (e) => {
-      // TODO logging
-      this.writing = false
+      Logger.error('Cannot save configuration', e)
     })
   }
 }
 
-const configFile = `${homedir()}/cupcake-pgp.json`
+const configFile = path.join(homedir(), 'cupcake-pgp.json')
 const keyring = new KeyRing(configFile)
 
 setInterval(() => {

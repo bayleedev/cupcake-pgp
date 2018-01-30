@@ -5,6 +5,9 @@ import App from './components/App'
 import Home from './components/Home'
 import Friends from './components/Friends'
 import AddFriend from './components/AddFriend'
+import Logger from './util/logger'
+
+Logger.info('loaded')
 
 let root = document.createElement('div')
 root.id = 'root'
