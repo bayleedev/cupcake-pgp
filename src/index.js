@@ -3,6 +3,8 @@ import { render } from 'react-dom'
 import { HashRouter, Route } from 'react-router-dom'
 import App from './components/App'
 import Home from './components/Home'
+import Friends from './components/Friends'
+import AddFriend from './components/AddFriend'
 import './pgp-client'
 
 let root = document.createElement('div')
@@ -13,7 +15,9 @@ document.body.appendChild(root)
 render((
   <HashRouter>
     <App>
-      <Route path="/" component={Home} />
+      <Route path="/" exact component={Home} />
+      <Route path="/friends" component={Friends} />
+      <Route path="/addFriend" component={AddFriend} />
     </App>
   </HashRouter>
 ), document.getElementById('root'))

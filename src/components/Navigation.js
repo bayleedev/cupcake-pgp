@@ -1,11 +1,12 @@
-import '../assets/css/App.css'
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 class Navigation extends React.Component {
   render() {
     return (
       <div>
-        ruff
+        <Link to="/">Home</Link>
+        <Link to="/friends">Friends</Link>
       </div>
     )
   }
