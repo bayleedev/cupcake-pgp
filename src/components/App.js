@@ -1,8 +1,8 @@
 import '../assets/css/App.css'
 import React, { Component } from 'react'
-import Navigation from './navigation'
-import KeyRing from '../model/KeyRing'
 import PropTypes from 'prop-types'
+import Navigation from './Navigation'
+import KeyRing from '../model/KeyRing'
 
 class App extends React.Component {
   static childContextTypes = {
