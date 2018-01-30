@@ -49,7 +49,7 @@ class KeyRing {
     if (this.writing) return
     this.writing = true
     jetpack.fileAsync(this.file, {
-      mode: '700',
+      mode: '600',
       content: this.data,
     }).then(() => {
       this.writing = false
