@@ -3,6 +3,7 @@ import { homedir } from 'os'
 import jetpack from 'fs-jetpack'
 import path from 'path'
 import Logger from '../util/logger'
+import PGP from '../util/pgp'
 
 class KeyRing {
   constructor (file) {
@@ -26,8 +27,29 @@ class KeyRing {
   }
 
   addFriend (publicKey) {
-    this.data.friends.push(publicKey)
-    return Promise.resolve()
+    return PGP.readKey(publicKey).then((data) => {
+      const id = data.keys[0].primaryKey.fingerprint
+      const keyType = data.keys[0].primaryKey.tag
+      const names = data.keys[0].users.map((user) => user.userId.userid)
+      if (keyType !== PGP.keyTypes.publicKey) {
+        if (keyType === PGP.keyTypes.secretKey) {
+          throw new Error('Error: Input was not a public key, it was a private key.')
+        } else {
+          throw new Error('Error: Input was not a public key.')
+        }
+      }
+      const added = this.data.friends.find((friend) => {
+        return friend.id === id
+      })
+      if (added) {
+        throw new Error('Error: This friend has already been added.')
+      }
+      this.data.friends.push({
+        id,
+        publicKey,
+        names,
+      })
+    })
   }
 
   removeFriend (publicKey) {

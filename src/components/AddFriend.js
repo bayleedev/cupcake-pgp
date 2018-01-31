@@ -24,13 +24,14 @@ class AddFriend extends React.Component {
     })
     this.context.keyRing.addFriend(this.state.key).then(() => {
       this.setState({
+        key: '',
         isLoading: false,
-        key: ''
       })
       this.props.history.push('/friends');
     }).catch((e) => {
       Logger.error('Failed to add friend', e)
       this.setState({
+        key: '',
         isLoading: false,
         hasError: true,
         errorMessage: e.message,

@@ -27,22 +27,28 @@ module.exports = {
           { loader: 'css-loader' },
           { loader: 'sass-loader' },
         ],
-        include: defaultInclude
+        include: defaultInclude,
       },
       {
-        test: /\.jsx?$/,
-        use: [{ loader: 'babel-loader' }],
-        include: defaultInclude
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['react'],
+            plugins: ['transform-class-properties'],
+          }
+        },
+        include: defaultInclude,
       },
       {
         test: /\.(jpe?g|png|gif)$/,
         use: [{ loader: 'file-loader?name=img/[name]__[hash:base64:5].[ext]' }],
-        include: defaultInclude
+        include: defaultInclude,
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
-        include: defaultInclude
+        include: defaultInclude,
       }
     ]
   },
@@ -52,13 +58,14 @@ module.exports = {
       template: 'src/index.html',
     }),
     new CopyWebpackPlugin([
-      { from: 'src/pgp-sw.js' },
+      { from: 'node_modules/openpgp/dist/openpgp.js' },
+      { from: 'node_modules/openpgp/dist/openpgp.worker.js' },
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })
   ],
-  devtool: 'cheap-source-map',
+  devtool: 'source-map',
   devServer: {
     contentBase: OUTPUT_DIR,
     stats: {

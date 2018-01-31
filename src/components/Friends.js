@@ -7,8 +7,8 @@ class Friends extends React.Component {
     return (
       <div className="content">
         <ul>
-          { KeyRing.friends.map((friend) => {
-            return <li key={friend}>{friend}</li>
+          { KeyRing.friends.map(({ id }) => {
+            return <li key={id}>{id}</li>
           }) }
         </ul>
         <br />
