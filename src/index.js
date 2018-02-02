@@ -5,6 +5,7 @@ import App from './components/App'
 import Home from './components/Home'
 import Friends from './components/Friends'
 import AddFriend from './components/AddFriend'
+import Encrypt from './components/Encrypt'
 import Logger from './util/logger'
 
 Logger.info('loaded')
@@ -20,6 +21,7 @@ render((
       <Route path="/" exact component={Home} />
       <Route path="/friends" exact component={Friends} />
       <Route path="/addFriend" exact component={AddFriend} />
+      <Route path="/encrypt" exact component={Encrypt} />
     </App>
   </HashRouter>
 ), document.getElementById('root'))

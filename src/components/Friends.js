@@ -1,17 +1,32 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import KeyRing from '../model/KeyRing'
+import PropTypes from 'prop-types'
+import Friend from './Friend'
 
 class Friends extends React.Component {
+  static contextTypes = {
+    keyRing: PropTypes.object.isRequired,
+  }
+
+  handleDelete = (id) => {
+    this.context.keyRing.removeFriend(id)
+  }
+
   render() {
+    const { keyRing } = this.context
+
     return (
       <div className="content">
         <ul>
-          { KeyRing.friends.map(({ id }) => {
-            return <li key={id}>{id}</li>
-          }) }
+          { keyRing.keys.map(({ id, names }) => (
+            <li>
+              <Friend
+                id={id}
+                names={names}
+                handleDelete={this.handleDelete} />
+            </li>
+          )) }
         </ul>
-        <br />
         <Link to="/addFriend">Add Friend</Link>
       </div>
     )

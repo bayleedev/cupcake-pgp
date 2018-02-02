@@ -22,7 +22,7 @@ class AddFriend extends React.Component {
     this.setState({
       isLoading: true,
     })
-    this.context.keyRing.addFriend(this.state.key).then(() => {
+    this.context.keyRing.addKey(this.state.key).then(() => {
       this.setState({
         key: '',
         isLoading: false,
