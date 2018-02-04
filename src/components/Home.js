@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import Cupcake from './Cupcake'
 
 class Home extends React.Component {
   render() {
     return (
       <div className="content">
-        meow
+        <Cupcake input="aelora" />
       </div>
     )
   }
