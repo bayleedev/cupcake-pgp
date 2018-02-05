@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router'
+import { connect } from 'redux-zero/react'
+
 import Logger from '../util/logger'
+import actions from '../actions'
+
+const mapToProps = ({ addKey }) => ({ addKey })
 
 class AddFriend extends React.Component {
-  static contextTypes = {
-    keyRing: PropTypes.object.isRequired,
-  }
-
   static propTypes = {
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    addKey: PropTypes.func.isRequired,
   }
 
   state = {
@@ -19,15 +20,17 @@ class AddFriend extends React.Component {
   }
 
   handleSubmit = () => {
+    const { addKey, history } = this.props
+
     this.setState({
       isLoading: true,
     })
-    this.context.keyRing.addKey(this.state.key).then(() => {
+    addKey(this.state.key).then(() => {
       this.setState({
         key: '',
         isLoading: false,
       })
-      this.props.history.push('/friends');
+      history.push('/friends');
     }).catch((e) => {
       Logger.error('Failed to add friend', e)
       this.setState({
@@ -67,4 +70,4 @@ class AddFriend extends React.Component {
   }
 }
 
-export default withRouter(AddFriend)
+export default connect(mapToProps, actions)(AddFriend)

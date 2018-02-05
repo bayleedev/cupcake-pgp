@@ -19,7 +19,7 @@ class Cupcake extends React.Component {
       <div className="cupcake">
         { layers.map(({ name, items, seed }) => {
           const out = (input + seed) % items
-          return <div className={'cupcake-part ' + name + '-' + out}></div>
+          return <div key={name} className={'cupcake-part ' + name + '-' + out}></div>
         }) }
       </div>
     )

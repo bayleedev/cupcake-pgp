@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { connect } from 'redux-zero/react'
+
+import actions from '../actions'
+
+const mapToProps = ({ keys, removeKey }) => ({ keys, removeKey })
 
 class Encrypt extends React.Component {
-  static contextTypes = {
-    keyRing: PropTypes.object.isRequired,
+  static propTypes = {
+    keys: PropTypes.array.isRequired,
   }
 
   state = {
@@ -29,7 +34,11 @@ class Encrypt extends React.Component {
   }
 
   render() {
-    const { keyRing } = this.context
+    const { keys } = this.props
+
+    const hasPrivateKey = !!keys.find((key) => {
+      return !!key.privateKey
+    })
 
     return (
       <div className="content">
@@ -39,14 +48,14 @@ class Encrypt extends React.Component {
           <textarea onChange={this.handleKeyChange} value={this.state.message}>
           </textarea>
         </div>
-        { keyRing.hasPrivateKey() && (
+        { hasPrivateKey && (
           <div className="signMessage">
             <input
               onChange={this.handleSignMessageChange}
               id="signMessage"
               type="checkbox" />
             <label htmlFor="signMessage">
-              Sign Message? {String(this.state.signMessage)}
+              Sign Message?
             </label>
           </div>
         ) }
@@ -56,4 +65,4 @@ class Encrypt extends React.Component {
   }
 }
 
-export default Encrypt
+export default connect(mapToProps, actions)(Encrypt)

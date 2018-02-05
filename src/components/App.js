@@ -1,32 +1,73 @@
-import '../assets/css/App.css'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'redux-zero/react'
+
+import '../assets/css/App.css'
 import Navigation from './Navigation'
-import KeyRing from '../model/KeyRing'
+import actions from '../actions'
+
+const mapToProps = ({ loadKeys, saveKeys }) => ({ loadKeys, saveKeys })
 
 class App extends React.Component {
-  static childContextTypes = {
-    keyRing: PropTypes.object,
+  static propTypes = {
+    loadKeys: PropTypes.func.isRequired,
+    saveKeys: PropTypes.func.isRequired,
   }
 
-  getChildContext() {
-    return {
-      keyRing: KeyRing,
-    }
+  state = {
+    loading: true,
+    error: false,
+  }
+
+  loadKeys = () => {
+    return this.props.loadKeys().then(() => {
+      this.setState({
+        loading: false,
+      })
+    }).catch((e) => {
+      this.setState({
+        loading: false,
+        error: e.message,
+      })
+    })
+  }
+
+  saveKeys = () => {
+    this.props.saveKeys().then(() => {
+      setTimeout(() => {
+        this.saveKeys()
+      }, 1000)
+    })
+  }
+
+  componentWillMount () {
+    this.loadKeys().then(() => {
+      this.saveKeys()
+    })
   }
 
   render() {
+    const { loading, error } = this.state
+
     return (
       <div id="app">
         <div className="navigation">
           <Navigation />
         </div>
         <div className="content">
-          {this.props.children}
+          { loading ? (
+            <p>Loading...</p>
+          ) : (
+            error ? (
+              <p>{error}</p>
+            ) : (
+              this.props.children
+            )
+          ) }
         </div>
       </div>
     )
   }
 }
 
-export default App
+export default connect(mapToProps, actions)(App)

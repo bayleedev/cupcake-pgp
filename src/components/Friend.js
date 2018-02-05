@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 class Friend extends React.Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    names: PropTypes.string.isRequired,
+    names: PropTypes.array.isRequired,
     handleDelete: PropTypes.func.isRequired,
   }
 
