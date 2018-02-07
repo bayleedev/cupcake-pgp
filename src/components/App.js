@@ -24,16 +24,11 @@ class App extends React.Component {
       this.setState({
         loading: false,
       })
-    }).catch((e) => {
-      this.setState({
-        loading: false,
-        error: e.message,
-      })
     })
   }
 
   saveKeys = () => {
-    this.props.saveKeys().then(() => {
+    return this.props.saveKeys().then(() => {
       setTimeout(() => {
         this.saveKeys()
       }, 1000)
@@ -42,7 +37,12 @@ class App extends React.Component {
 
   componentWillMount () {
     this.loadKeys().then(() => {
-      this.saveKeys()
+      return this.saveKeys()
+    }).catch((e) => {
+      this.setState({
+        loading: false,
+        error: e.message,
+      })
     })
   }
 
