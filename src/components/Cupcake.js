@@ -1,5 +1,5 @@
 import '../assets/css/Cupcake.css'
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 class Cupcake extends React.Component {
@@ -7,7 +7,7 @@ class Cupcake extends React.Component {
     input: PropTypes.string.isRequired,
   }
 
-  render() {
+  render () {
     const input = parseInt(this.props.input.replace(/[^a-z0-9]/ig, ''), 36)
     const layers = [
       { name: 'top', items: 10, seed: 1 },

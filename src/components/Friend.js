@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 class Friend extends React.Component {
@@ -13,7 +12,7 @@ class Friend extends React.Component {
     this.props.handleDelete(this.props.id)
   }
 
-  render() {
+  render () {
     const { names } = this.props
 
     return (

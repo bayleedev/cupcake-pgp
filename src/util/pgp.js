@@ -1,6 +1,5 @@
 const openpgp = require('openpgp')
 
-
 class PGP {
   keyTypes = {
     secretKey: openpgp.enums.packet.secretKey,

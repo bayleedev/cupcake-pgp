@@ -36,7 +36,7 @@ module.exports = {
           options: {
             presets: ['react'],
             plugins: ['transform-class-properties'],
-          }
+          },
         },
         include: defaultInclude,
       },
@@ -49,8 +49,8 @@ module.exports = {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
         include: defaultInclude,
-      }
-    ]
+      },
+    ],
   },
   target: 'electron-renderer',
   plugins: [
@@ -62,8 +62,8 @@ module.exports = {
       { from: 'node_modules/openpgp/dist/openpgp.worker.js' },
     ]),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-    })
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
   ],
   devtool: 'source-map',
   devServer: {
@@ -71,16 +71,16 @@ module.exports = {
     stats: {
       colors: true,
       chunks: false,
-      children: false
+      children: false,
     },
-    setup() {
+    setup () {
       spawn(
         'electron',
         ['.'],
         { shell: true, env: process.env, stdio: 'inherit' }
       )
-      .on('close', code => process.exit(0))
-      .on('error', spawnError => console.error(spawnError))
-    }
-  }
+        .on('close', code => process.exit(0))
+        .on('error', spawnError => console.error(spawnError))
+    },
+  },
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'redux-zero/react'
 
@@ -30,7 +30,7 @@ class AddFriend extends React.Component {
         key: '',
         isLoading: false,
       })
-      history.push('/friends');
+      history.push('/friends')
     }).catch((e) => {
       Logger.error('Failed to add friend', e)
       this.setState({
@@ -48,7 +48,7 @@ class AddFriend extends React.Component {
     })
   }
 
-  render() {
+  render () {
     const { hasError, isLoading, errorMessage, key } = this.state
     return (
       <div>
@@ -58,7 +58,7 @@ class AddFriend extends React.Component {
         { hasError && (
           <div className="error">{errorMessage}</div>
         ) }
-        <textarea onChange={this.handleKeyChange} value={this.state.key}>
+        <textarea onChange={this.handleKeyChange} value={key}>
         </textarea>
         <button
           disabled={isLoading}

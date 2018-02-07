@@ -34,14 +34,16 @@ const actions = () => ({
     return {
       keys: keys.filter((key) => {
         return key.id !== id
-      })
+      }),
     }
   },
 
   addKey ({ keys: oldKeys }, newKey) {
     const keys = oldKeys.slice(0)
     return PGP.readKey(newKey).then((data) => {
-      let publicKey, privateKey, isEncrypted = false
+      let publicKey
+      let privateKey
+      let isEncrypted = false
       const id = data.keys[0].primaryKey.fingerprint
       const keyType = data.keys[0].primaryKey.tag
       const names = data.keys[0].users.map((user) => user.userId.userid)

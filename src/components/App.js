@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'redux-zero/react'
 
@@ -12,6 +12,7 @@ class App extends React.Component {
   static propTypes = {
     loadKeys: PropTypes.func.isRequired,
     saveKeys: PropTypes.func.isRequired,
+    children: PropTypes.any.isRequired,
   }
 
   state = {
@@ -46,7 +47,7 @@ class App extends React.Component {
     })
   }
 
-  render() {
+  render () {
     const { loading, error } = this.state
 
     return (

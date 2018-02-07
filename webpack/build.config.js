@@ -25,7 +25,7 @@ module.exports = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: 'css-loader'
+          use: 'css-loader',
         }),
         include: defaultInclude,
       },
@@ -36,7 +36,7 @@ module.exports = {
           options: {
             presets: ['react'],
             plugins: ['transform-class-properties'],
-          }
+          },
         },
         include: defaultInclude,
       },
@@ -49,8 +49,8 @@ module.exports = {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
         include: defaultInclude,
-      }
-    ]
+      },
+    ],
   },
   target: 'electron-renderer',
   plugins: [
@@ -63,14 +63,14 @@ module.exports = {
     ]),
     new ExtractTextPlugin('bundle.css'),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new BabiliPlugin()
+    new BabiliPlugin(),
   ],
   stats: {
     colors: true,
     children: false,
     chunks: false,
-    modules: false
-  }
+    modules: false,
+  },
 }

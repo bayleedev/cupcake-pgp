@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Cupcake from './Cupcake'
 
 class Home extends React.Component {
-  render() {
+  render () {
     return (
       <div className="content">
         <Cupcake input="aelora" />
