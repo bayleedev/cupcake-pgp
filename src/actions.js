@@ -59,16 +59,22 @@ const actions = () => ({
           throw new Error('Error: Unrecognized input.')
       }
 
-      const added = keys.find((key) => {
-        return key.id === id &&
-          key.publicKey === publicKey &&
-          key.privateKey === privateKey
+      const currentIndex = keys.findIndex((key) => {
+        return key.id === id
       })
-      if (added) {
-        throw new Error('Warning: You have already added this key.')
-      }
 
-      keys.push({ id, isEncrypted, privateKey, publicKey, names })
+      if (currentIndex === -1) {
+        keys.push({ id, isEncrypted, privateKey, publicKey, names })
+      } else {
+        const currentKey = keys[currentIndex]
+        keys[currentIndex] = {
+          id,
+          isEncrypted: currentKey.isEncrypted || isEncrypted,
+          privateKey: currentKey.privateKey || privateKey,
+          publicKey,
+          names,
+        }
+      }
 
       return { keys }
     })
