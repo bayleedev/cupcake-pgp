@@ -31,13 +31,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['react'],
-            plugins: ['transform-class-properties'],
-          },
-        },
+        use: { loader: 'babel-loader' },
         include: defaultInclude,
       },
       {
