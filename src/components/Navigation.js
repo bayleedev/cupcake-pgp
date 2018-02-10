@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 class Navigation extends React.Component {
   render () {
     return (
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/encrypt">Encrypt</Link></li>
-        <li><Link to="/friends">Friends</Link></li>
+      <ul className="navigation">
+        <li className="home"><Link to="/">Home</Link></li>
+        <li className="encrypt"><Link to="/encrypt">Encrypt</Link></li>
+        <li className="friends"><Link to="/friends">Friends</Link></li>
       </ul>
     )
   }

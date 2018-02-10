@@ -23,7 +23,7 @@ class Friends extends React.Component {
 
     return (
       <div className="content">
-        <ul>
+        <ul className="friends">
           { keys.map(({ id, names }, index) => (
             <li key={id + index}>
               <Friend
@@ -33,7 +33,9 @@ class Friends extends React.Component {
             </li>
           )) }
         </ul>
-        <Link to="/addFriend">Add Friend</Link>
+        <span className="addFriend">
+          <Link to="/addFriend">Add Friend</Link>
+        </span>
       </div>
     )
   }
