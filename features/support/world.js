@@ -3,6 +3,14 @@ const { Application } = require('spectron')
 const path = require('path') 
 const appPath = path.join(__dirname, '../../')
 
+function wait (time) {
+  return () => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time)
+    })
+  }
+}
+
 class World {
   constructor () {
     this.app = new Application({
@@ -22,18 +30,54 @@ class World {
     return this.gotoPage('/addFriend')
   }
 
+  friendsPage () {
+    return this.gotoPage('/friends')
+  }
+
   addKey (key) {
-    return this.app.client.setValue('textarea', key).then(() => {
+    return this.addFriendPage().then(() => {
+      return this.app.client.setValue('textarea', key)
+    }).then(() => {
       return this.app.client.click('button')
+    }).then(wait(1000))
+  }
+
+  friendsList (filterName) {
+    return this.friendsPage().then(() => {
+      return this.app.client.execute((findName) => {
+        const friends = [...document.querySelectorAll('.friends .friend')]
+        return friends.map((friend) => {
+          const names = [...friend.querySelectorAll('.name')]
+          return {
+            names: names.map((name) => {
+              return name.innerText
+            })
+          }
+        })
+      })
+    }).then(({ value: friends }) => {
+      return friends.filter(({ names }) => {
+        return names.filter((name) => {
+          return name.match(filterName)
+        }).length > 0
+      })
     })
   }
 
-  friendCount () {
+  removeKey (findName) {
     return this.gotoPage('/friends').then(() => {
-      return this.app.client.$$('ul.friends .friend')
-    }).then((elements) => {
-      return elements.length
-    })
+      return this.app.client.execute((findName) => {
+        document.querySelectorAll('ul.friends .friend').forEach((friend) => {
+          friend.querySelectorAll('.name').forEach((el) => {
+            if (el.innerText.match(findName)) {
+              friend.classList.add('clickMe')
+            }
+          })
+        })
+      }, findName)
+    }).then(() => {
+      return this.app.client.click('.clickMe .delete')
+    }).then(wait(1000))
   }
 
   open () {

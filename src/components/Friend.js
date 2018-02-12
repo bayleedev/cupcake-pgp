@@ -19,11 +19,11 @@ class Friend extends React.Component {
       <div className="friend">
         <div className="names">
           { names.map((name) => {
-            return <div key={name}>{name}</div>
+            return <div key={name} className="name">{name}</div>
           }) }
         </div>
         <div className="actions">
-          <a onClick={this.handleDelete}>Delete</a>
+          <a onClick={this.handleDelete} className="delete">Delete</a>
         </div>
       </div>
     )

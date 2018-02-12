@@ -6,16 +6,26 @@ Given(/^the app is launched$/, function () {
   return this.open()
 })
 
-Given('I am on the {string} page', function (string) {
-  return this.addFriendPage()
+When('I have Teddy Bear as a friend', function () {
+  return this.addFriendPage().then(() => {
+    return this.addKey(KEYS.TEDDY.PUBLIC)
+  }).then(() => {
+    return this.friendsList('Teddy Bear')
+  }).then((matchedFriends) => {
+    expect(matchedFriends.length).to.eql(1)
+  })
 })
 
-When('I add Teddy\'s public key', function () {
-  this.addKey(KEYS.TEDDY.PUBLIC)
+When('I add Teddy Bear\'s public key', function () {
+  return this.addKey(KEYS.TEDDY.PUBLIC)
 })
 
-When('I add Teddy\'s private key', function () {
-  this.addKey(KEYS.TEDDY.PRIVATE)
+When('I add Teddy Bear\'s private key', { timeout: 10 * 1000 }, function () {
+  return this.addKey(KEYS.TEDDY.PRIVATE)
+})
+
+When('I delete Teddy Bear\'s key', function () {
+  return this.removeKey('Teddy Bear')
 })
 
 Then(/^the app is visible$/, function () {
@@ -33,8 +43,9 @@ Then(/^I have no accessibility warnings$/, function () {
   })
 })
 
-Then('I should have {int} friend', function (count) {
-  return this.friendCount().then((friendCount) => {
-    expect(friendCount).to.eql(count)
+Then(/I should have ([0-9]+) friends? named "(.*)"/, function (expectedCountStr, expectedName) {
+  const expectedCount = parseInt(expectedCountStr, 10)
+  return this.friendsList(expectedName).then((matchedFriends) => {
+    expect(matchedFriends.length).to.eql(expectedCount)
   })
 })
