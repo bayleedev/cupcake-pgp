@@ -5,7 +5,8 @@ const util = require('util')
 const path = require('path')
 const { homedir } = require('os')
 
-const logDir = path.join(homedir(), '.cupcake')
+const home = process.env.CUPCAKE_HOME || homedir()
+const logDir = path.join(home, '.cupcake')
 
 jetpack.dir(logDir)
 

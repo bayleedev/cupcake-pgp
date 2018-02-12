@@ -1,17 +1,20 @@
 const { After } = require('cucumber')
 const path = require('path')
-const { homedir } = require('os')
 const jetpack = require('fs-jetpack')
 
-const logDir = path.join(homedir(), '.cupcake')
+const logDir = path.join(__dirname, '../../test/fixtures/home/.cupcake')
+const configFile = path.join(__dirname, '../../test/fixtures/home/cupcake-pgp.json')
 
 After(function (scenario) {
   return this.close().then(() => {
-    if (scenario.result.status === 'passed') return
     const files = jetpack.list(logDir) || []
     files.map((file) => {
       const logFile = path.join(logDir, file)
-      console.log(jetpack.read(logFile))
+      if (scenario.result.status !== 'passed') {
+        console.log(jetpack.read(logFile))
+      }
+      jetpack.remove(logFile)
     })
+    jetpack.remove(configFile)
   })
 })

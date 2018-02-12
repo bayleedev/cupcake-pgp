@@ -2,6 +2,7 @@ const { setWorldConstructor } = require('cucumber')
 const { Application } = require('spectron')
 const path = require('path') 
 const appPath = path.join(__dirname, '../../')
+const homeDir = path.join(__dirname, '../../test/fixtures/home')
 
 function wait (time) {
   return () => {
@@ -15,7 +16,10 @@ class World {
   constructor () {
     this.app = new Application({
       path: require('electron'),
-      args: ['--noDevServer', path.join(__dirname, '..', '..')]
+      args: ['--noDevServer', path.join(__dirname, '..', '..')],
+      env: {
+        CUPCAKE_HOME: homeDir,
+      },
     })
   }
 

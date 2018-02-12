@@ -4,7 +4,8 @@ import path from 'path'
 
 import PGP from './util/pgp'
 
-const configFile = path.join(homedir(), 'cupcake-pgp.json')
+const home = process.env.CUPCAKE_HOME || homedir()
+const configFile = path.join(home, 'cupcake-pgp.json')
 
 const actions = () => ({
   loadKeys () {
