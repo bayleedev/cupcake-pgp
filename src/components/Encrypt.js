@@ -4,7 +4,7 @@ import { connect } from 'redux-zero/react'
 
 import actions from '../actions'
 
-const mapToProps = ({ keys, removeKey }) => ({ keys, removeKey })
+const mapToProps = ({ keys }) => ({ keys })
 
 class Encrypt extends React.Component {
   static propTypes = {
@@ -12,6 +12,7 @@ class Encrypt extends React.Component {
   }
 
   state = {
+    search: '',
     message: '',
     signMessage: false,
   }
@@ -28,11 +29,18 @@ class Encrypt extends React.Component {
     })
   }
 
+  handleSearchChange = (e) => {
+    this.setState({
+      search: e.target.value,
+    })
+  }
+
   encryptMessage = () => {
     alert('wat')
   }
 
   render () {
+    const { search } = this.state
     const { keys } = this.props
 
     const hasPrivateKey = !!keys.find((key) => {
@@ -42,6 +50,18 @@ class Encrypt extends React.Component {
     return (
       <div className="content">
         <div className="recepients">
+          <input onChange={this.handleSearchChange} value={search} />
+          {
+            keys.filter((key) => {
+              return key.names.find((name) => {
+                return name.match(search) && search.length > 0
+              })
+            }).slice(0, 10).map((key, i) => {
+              return (
+                <span key={i}>Found one! {JSON.stringify(key.names)}</span>
+              )
+            })
+          }
         </div>
         <div className="message">
           <textarea onChange={this.handleKeyChange} value={this.state.message}>
