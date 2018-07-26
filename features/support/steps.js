@@ -6,21 +6,19 @@ Given(/^the app is launched$/, function () {
   return this.open()
 })
 
-When('I have Teddy Bear as a friend', function () {
-  return this.addFriendPage().then(() => {
-    return this.addKey(KEYS.TEDDY.PUBLIC)
-  }).then(() => {
+When('I have Teddy Bear as a friend', { timeout: 15 * 1000 }, function () {
+  return this.addKey(KEYS.TEDDY.PUBLIC).then(() => {
     return this.friendsList('Teddy Bear')
   }).then((matchedFriends) => {
     expect(matchedFriends.length).to.eql(1)
   })
 })
 
-When('I add Teddy Bear\'s public key', function () {
+When('I add Teddy Bear\'s public key', { timeout: 15 * 1000 }, function () {
   return this.addKey(KEYS.TEDDY.PUBLIC)
 })
 
-When('I add Teddy Bear\'s private key', { timeout: 10 * 1000 }, function () {
+When('I add Teddy Bear\'s private key', { timeout: 15 * 1000 }, function () {
   return this.addKey(KEYS.TEDDY.PRIVATE)
 })
 

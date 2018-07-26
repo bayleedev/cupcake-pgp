@@ -1,6 +1,6 @@
 const { setWorldConstructor } = require('cucumber')
 const { Application } = require('spectron')
-const path = require('path') 
+const path = require('path')
 const appPath = path.join(__dirname, '../../')
 const homeDir = path.join(__dirname, '../../test/fixtures/home')
 
@@ -14,6 +14,8 @@ function wait (time) {
 
 class World {
   constructor () {
+    this.screenshots = []
+    this.debug = []
     this.app = new Application({
       path: require('electron'),
       args: ['--noDevServer', path.join(__dirname, '..', '..')],
@@ -27,6 +29,10 @@ class World {
     return this.app.client.getUrl().then((url) => {
       const nextUrl = url.replace(/index.html.*/, `index.html#${nextPath}`)
       return this.app.client.url(nextUrl)
+    }).then(() => {
+      return this.app.client.waitUntilWindowLoaded(10000)
+    }).then(() => {
+      return this.screenshot('gotoPage ' + nextPath)
     })
   }
 
@@ -60,11 +66,16 @@ class World {
         })
       })
     }).then(({ value: friends }) => {
+      this.debug.push(['found friends', friends])
       return friends.filter(({ names }) => {
         return names.filter((name) => {
+          this.debug.push('Found: "' + name + '", Expected: "' + filterName + '"')
           return name.match(filterName)
         }).length > 0
       })
+    }).then((filteredFriends) => {
+      this.debug.push(['filtered friends', filteredFriends])
+      return filteredFriends
     })
   }
 
@@ -85,7 +96,10 @@ class World {
   }
 
   open () {
-    return this.app.start()
+    this.screenshots = []
+    return this.app.start().then(() => {
+      return this.screenshot('open app')
+    })
   }
 
   isWindowVisible () {
@@ -94,6 +108,14 @@ class World {
 
   accessibility () {
     return this.app.client.auditAccessibility()
+  }
+
+  screenshot (name) {
+    return this.app.browserWindow.capturePage().then((data) => {
+      this.debug.push('added screenshot: ' + name)
+      this.screenshots.push([name, new Buffer(data).toString('base64')])
+      return this.screenshots
+    })
   }
 
   close () {
