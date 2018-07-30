@@ -13,6 +13,7 @@ class Encrypt extends React.Component {
 
   state = {
     search: '',
+    results: [],
     message: '',
     signMessage: false,
   }
@@ -29,9 +30,52 @@ class Encrypt extends React.Component {
     })
   }
 
+  handleSearchIndex = (e) => {
+    const { selectedResultIndex, results } = this.state
+    e.preventDefault()
+    if (e.key === 'ArrowUp') {
+      if (selectedResultIndex > 0) {
+        const upOne = selectedResultIndex - 1
+        this.setState({
+          selectedResultIndex: upOne,
+        })
+      } else {
+        const endOfResults = results.length - 1
+        this.setState({
+          selectedResultIndex: endOfResults,
+        })
+      }
+    } else if (e.key === 'ArrowDown') {
+      const downOne = selectedResultIndex + 1
+      if (downOne >= results.length) {
+        this.setState({
+          selectedResultIndex: 0,
+        })
+      } else {
+        this.setState({
+          selectedResultIndex: downOne,
+        })
+      }
+    } else if (e.key === 'Enter') {
+      alert('select them!')
+    } else if (e.key === 'Escape') {
+      alert('get rid of that search box!')
+    }
+  }
+
   handleSearchChange = (e) => {
+    const { keys } = this.props
+    const search = e.target.value
+    const results = keys.filter((key) => {
+      return key.names.find((name) => {
+        return name.match(search) && search.length > 0
+      })
+    })
+
     this.setState({
-      search: e.target.value,
+      search,
+      results,
+      selectedResultIndex: 0,
     })
   }
 
@@ -40,7 +84,7 @@ class Encrypt extends React.Component {
   }
 
   render () {
-    const { search } = this.state
+    const { search, results, selectedResultIndex } = this.state
     const { keys } = this.props
 
     const hasPrivateKey = !!keys.find((key) => {
@@ -50,18 +94,19 @@ class Encrypt extends React.Component {
     return (
       <div className="content">
         <div className="recepients">
-          <input onChange={this.handleSearchChange} value={search} />
-          {
-            keys.filter((key) => {
-              return key.names.find((name) => {
-                return name.match(search) && search.length > 0
+          <input onKeyDown={this.handleSearchIndex} onChange={this.handleSearchChange} value={search} />
+          <div className="results">
+            {
+              results.slice(0, 10).map((key, i) => {
+                if (selectedResultIndex === i) {
+
+                }
+                return (
+                  <span className={selectedResultIndex === i ? 'selected' : ''} key={i}>{JSON.stringify(key.names[0])}</span>
+                )
               })
-            }).slice(0, 10).map((key, i) => {
-              return (
-                <span key={i}>Found one! {JSON.stringify(key.names)}</span>
-              )
-            })
-          }
+            }
+          </div>
         </div>
         <div className="message">
           <textarea onChange={this.handleKeyChange} value={this.state.message}>
