@@ -16,6 +16,7 @@ class Encrypt extends React.Component {
     results: [],
     message: '',
     signMessage: false,
+    selectedRecepients: [],
   }
 
   handleSignMessageChange = (data) => {
@@ -32,8 +33,9 @@ class Encrypt extends React.Component {
 
   handleSearchIndex = (e) => {
     const { selectedResultIndex, results } = this.state
-    e.preventDefault()
-    if (e.key === 'ArrowUp') {
+    const hitKey = e.key
+    if (['ArrowUp', 'ArrowDown', 'Enter', 'Escape'].indexOf(hitKey) !== -1) e.preventDefault()
+    if (hitKey === 'ArrowUp') {
       if (selectedResultIndex > 0) {
         const upOne = selectedResultIndex - 1
         this.setState({
@@ -45,7 +47,7 @@ class Encrypt extends React.Component {
           selectedResultIndex: endOfResults,
         })
       }
-    } else if (e.key === 'ArrowDown') {
+    } else if (hitKey === 'ArrowDown') {
       const downOne = selectedResultIndex + 1
       if (downOne >= results.length) {
         this.setState({
@@ -56,10 +58,11 @@ class Encrypt extends React.Component {
           selectedResultIndex: downOne,
         })
       }
-    } else if (e.key === 'Enter') {
-      alert('select them!')
-    } else if (e.key === 'Escape') {
-      alert('get rid of that search box!')
+    } else if (hitKey === 'Enter') {
+      const selectedKey = results[selectedResultIndex]
+      this.addRecepient(selectedKey)()
+    } else if (hitKey === 'Escape') {
+      this.clearSearch()
     }
   }
 
@@ -83,8 +86,26 @@ class Encrypt extends React.Component {
     alert('wat')
   }
 
+  clearSearch = () => {
+    this.setState({
+      search: '',
+      results: [],
+    })
+  }
+
+  addRecepient = (key) => {
+    return () => {
+      const { selectedRecepients } = this.state
+      const newRecepient = key.id
+      this.setState({
+        selectedRecepients: selectedRecepients.concat(newRecepient),
+      })
+      this.clearSearch()
+    }
+  }
+
   render () {
-    const { search, results, selectedResultIndex } = this.state
+    const { search, results, selectedResultIndex, selectedRecepients } = this.state
     const { keys } = this.props
 
     const hasPrivateKey = !!keys.find((key) => {
@@ -94,15 +115,20 @@ class Encrypt extends React.Component {
     return (
       <div className="content">
         <div className="recepients">
+          <div className="current">
+            { selectedRecepients.join('\r\n') }
+          </div>
           <input onKeyDown={this.handleSearchIndex} onChange={this.handleSearchChange} value={search} />
           <div className="results">
             {
               results.slice(0, 10).map((key, i) => {
-                if (selectedResultIndex === i) {
-
-                }
                 return (
-                  <span className={selectedResultIndex === i ? 'selected' : ''} key={i}>{JSON.stringify(key.names[0])}</span>
+                  <span
+                    onClick={this.addRecepient(key)}
+                    className={selectedResultIndex === i ? 'selected' : ''}
+                    key={i}>
+                    {JSON.stringify(key.names[0])}
+                  </span>
                 )
               })
             }
